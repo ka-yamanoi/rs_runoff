@@ -116,7 +116,7 @@ The parameter file looks like,
   0.000001 !Rkb !Coefficient for a layer (m/s)
   0.1     ! Hsini !Initial water depth of ground water at downstream end of each slope (m)
   0.0     ! Hcini !Initial water depth of ground water at downstream end of channels (m)
-  1.d0    !Dt !Time step (s)
+  1.    !Dt !Time step (s)
   10      !Q0 !Specific water discharge at downstream end for deciding channel width (m^3/s)
   5       !Parameter for regeme fomula (m^(-1/2)*s^(1/2))
   0.05  !Dm1 !Mean diameter of river bed material (only for uniform bed) (m)
