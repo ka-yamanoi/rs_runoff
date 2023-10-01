@@ -117,13 +117,14 @@ The parameter file looks like,
   0.1     ! Hsini !Initial water depth of ground water at downstream end of each slope (m)
   0.0     ! Hcini !Initial water depth of ground water at downstream end of channels (m)
   1.    !Dt !Time step (s)
-  10      !Q0 !Specific water discharge at downstream end for deciding channel width (m^3/s)
-  5       !Parameter for regeme fomula (m^(-1/2)*s^(1/2))
+  10.      !Q0 !Specific water discharge at downstream end for deciding channel width (m^3/s)
+  5.       !Parameter for regeme fomula (m^(-1/2)*s^(1/2))
   0.05  !Dm1 !Mean diameter of river bed material (only for uniform bed) (m)
   300.   !data_time !Time interval of output for files (s)
-  3600.   !out_time !Time interval of output for display (s)
+  1800.   !out_time !Time interval of output for display (s)
   -10.    !dzbmin
 ```
+
 The values at the left indicate the parameter values, and the sentences after "!" indicates the description of each parameters.
 
 ## rainfall.dat
