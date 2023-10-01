@@ -11,5 +11,5 @@
   5       !Parameter for regeme fomula (m^(-1/2)*s^(1/2))
   0.05  !Dm1 !Mean diameter of river bed material (only for uniform bed) (m)
   300.   !data_time !Time interval of output for files (s)
-  3600.   !out_time !Time interval of output for display (s)
+  1800.   !out_time !Time interval of output for display (s)
   -10.    !dzbmin

@@ -1,6 +1,6 @@
 24 !number of data
 3600.d0 !time interval
-T prec
+T(sec) prec(mm)
 3600 0.
 7200 0.
 10800 0.
