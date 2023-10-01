@@ -1,0 +1,15 @@
+  0.7     !Cmns !Manning number of slopes (m^(-1/3)*s)
+  0.05    !Cmn !Manning number of channels (m^(-1/3)*s)
+  0.2     !Da !depth of A layer
+  0.1     !Db !depth of B layer
+  0.001   !Rka !Coefficient of permeability (m/s)
+  0.000001 !Rkb !Coefficient for a layer (m/s)
+  0.1     ! Hsini !Initial water depth of ground water at downstream end of each slope (m)
+  0.0     ! Hcini !Initial water depth of ground water at downstream end of channels (m)
+  1.d0    !Dt !Time step (s)
+  10      !Q0 !Specific water discharge at downstream end for deciding channel width (m^3/s)
+  5       !Parameter for regeme fomula (m^(-1/2)*s^(1/2))
+  0.05  !Dm1 !Mean diameter of river bed material (only for uniform bed) (m)
+  300.   !data_time !Time interval of output for files (s)
+  3600.   !out_time !Time interval of output for display (s)
+  -10.    !dzbmin
