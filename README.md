@@ -8,7 +8,6 @@ These codes can be used for conducting distributed rainfall runoff simulation, s
 
 ## Requirements
 * Linux or unix environment
-* gfortran
 
 ## How to run on the WSL (Windows Subsystem for Linux).
 Firstly, install wsl and a linux distribution (Ubuntu 22.04 is recommended) on windows environment.
@@ -16,7 +15,7 @@ Open the terminal, and type
 
 ```bash
 sudo apt update
-sudo apt istall gfortran git
+sudo apt install gfortran git
 ```
 
 Download the source code by,
