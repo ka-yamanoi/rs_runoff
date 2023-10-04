@@ -27,7 +27,7 @@ Then the directory named 'rs_runoff' is generated on the current dirrectory.
 After that you can compile the progam by, 
 ```bash
 cd ./rs_runoff
-gfortran ./ls_runoff.f90
+gfortran ./rs_runoff.f90
 ```
 Then, the executive file "a.out" is generated.
 
