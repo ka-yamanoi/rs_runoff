@@ -363,7 +363,6 @@ contains
   end subroutine beddeformation
 
   subroutine bedload
-!$  use omp_lib
     use array
     use para
     implicit none
@@ -732,32 +731,21 @@ contains
   end subroutine open_files_output
 
   subroutine rainfall_ucs
-!$  use omp_lib
     use array
     use para
     implicit none
     Real(8) Dy, Alp, Theta
     Integer II, M, N
 
-!   II=int((T+Tp/2)/Tp+1)! revised!!IIは時刻Tにおける、降雨データ軸での時刻
-!    II=int(T/Tp+1)  !steprain
     II = int((T/Tp - 0.0000001d0)) + 1  !steprain割り切れるとき（正時)は前の時刻のデータを使用する．
-!   write(*,*)T,Tp,II
-!   read(*,*)
-    !$omp parallel do default(shared),private(M)
     do M = 1, Nxs
-!       Rpr(M)=(Prec(II+1,M)-Prec(II,M))/Tp*((T+Tp/2)-Tp*(II-1))+Prec(II,M)! revised!!
       Rpr(M) = Prec(II, M)    !steprain
     end do
-    !$omp end parallel do
 
-    !$omp parallel do default(shared),private(M,Dy,Alp,Theta)
     do M = 1, Nxs
       Dy = Sl(M)/(Nys - 1)
       Qr(M, 1) = 0.
-      !      Theta=Datan(Sp(M))
       Theta = Sp(M)*2.d0*3.14159265358979323846D0/360.d0
-      !      Dy=Dy/Dcos(Theta)
       do N = 2, Nys
         if (Hr(M, N) < Db(M)) then
           Qr(M, N) = Rkb(M)*Hr(M, N)*Dsin(Theta)
@@ -774,10 +762,8 @@ contains
         if (Hr(M, N) <= 0.d0) Hr(M, N) = 0.d0
       end do
     end do
-    !$omp end parallel do
     Qrsum(1:Nxs, 1:Nys) = Qr(1:Nxs, 1:Nys)
 
-    !$omp parallel do default(shared),private(M)
     do M = 1, Nxs
       Hrsum(M) = 0.d0
       do N = 2, Nys
@@ -790,7 +776,6 @@ contains
       Hraverage(M) = Hrsum(M)/(Nys - 1)
       if (Hraverage(M) > Hrmax(M)) Hrmax(M) = Hraverage(M)
     end do
-    !$omp end parallel do
 
   end subroutine rainfall_ucs
 
@@ -800,13 +785,11 @@ contains
     implicit none
     integer I, L
 
-5006 FORMAT(F15.3, 3000(E15.7))
-5007 FORMAT(A15, 3000(I15))
     write (*, *) 'writing files... T=', T
 
     !Q
-    if (T <= Dt*0.01) Write (1201, 5007) 'T(s)', (I, I=1, Nxc)
-    Write (1201, 5006) T, (Q(I), I=1, Nxc)
+    if (T <= Dt*0.01) Write (1201, '(A15, 3000(I15))') 'T(s)', (I, I=1, Nxc)
+    Write (1201, '(F15.3, 3000(E15.7))') T, (Q(I), I=1, Nxc)
 
     !Qb
     do I = 1, Nxc
@@ -815,23 +798,23 @@ contains
         Free1(I) = Free1(I) + Qbx(L, I)
       end do
     end do
-    if (T <= Dt*0.01) Write (1202, 5007) 'T(s)', (I, I=1, Nxc)
-    Write (1202, 5006) T, (Free1(I), I=1, Nxc)
+    if (T <= Dt*0.01) Write (1202, '(A15, 3000(I15))') 'T(s)', (I, I=1, Nxc)
+    Write (1202, '(F15.3, 3000(E15.7))') T, (Free1(I), I=1, Nxc)
 
     !Zb
-    if (T <= Dt*0.01) Write (1205, 5007) 'T(s)', (I, I=1, Nxc)
-    Write (1205, 5006) T, (Zb(I), I=1, Nxc)
+    if (T <= Dt*0.01) Write (1205, '(A15, 3000(I15))') 'T(s)', (I, I=1, Nxc)
+    Write (1205, '(F15.3, 3000(E15.7))') T, (Zb(I), I=1, Nxc)
 
     !Dzb
     do I = 1, Nxc
       Free1(I) = Zb(I) - Zb0(I)
     end do
-    if (T <= Dt*0.01) Write (1220, 5007) 'T(s)', (I, I=1, Nxc)
-    Write (1220, 5006) T, (Free1(I), I=1, Nxc)
+    if (T <= Dt*0.01) Write (1220, '(A15, 3000(I15))') 'T(s)', (I, I=1, Nxc)
+    Write (1220, '(F15.3, 3000(E15.7))') T, (Free1(I), I=1, Nxc)
 
     !H
-    if (T <= Dt*0.01) Write (1221, 5007) 'T(s)', (I, I=1, Nxc)
-    Write (1221, 5006) T, (H(I), I=1, Nxc)
+    if (T <= Dt*0.01) Write (1221, '(A15, 3000(I15))') 'T(s)', (I, I=1, Nxc)
+    Write (1221, '(F15.3, 3000(E15.7))') T, (H(I), I=1, Nxc)
   end subroutine results
 
   subroutine screen
@@ -847,15 +830,14 @@ contains
     Write (*, *)
     Write (*, *)
     Write (*, *) 'Sediment Runoff model'
-    Write (*, 151) 'calculation time=', T, ' s    '
+    Write (*, '(A17, F15.5, A6, A17, F15.7, A6)') 'calculation time=', T, ' s    '
     Rpr11 = Rpr(Nxs)*1000.d0*3600.d0
-    Write (*, 151) 'END TIME=', T_end, ' s    ', 'Rainfall', Rpr11, ' mm/h '
-    Write (*, 151) 'dt=', Dt, ' s    '
+    Write (*, '(A17, F15.5, A6, A17, F15.7, A6)') 'END TIME=', T_end, ' s    ', 'Rainfall', Rpr11, ' mm/h '
+    Write (*, '(A17, F15.5, A6, A17, F15.7, A6)') 'dt=', Dt, ' s    '
     Write (*, *) 'TIME=', TIME, 'TIME_MAX=', TIME_MAX
-    Write (*, 151) 'Manning(slope)=', Cmns, ' s-m  '
-    Write (*, 151) 'Manning(river)=', Cmn, ' s-m  ', 'Em', Em, ' m    '
-    Write (*, 151) 'Q=', Q(Nxc2), ' m3/s '
-151 Format(A17, F15.5, A6, A17, F15.7, A6)
+    Write (*, '(A17, F15.5, A6, A17, F15.7, A6)') 'Manning(slope)=', Cmns, ' s-m  '
+    Write (*, '(A17, F15.5, A6, A17, F15.7, A6)') 'Manning(river)=', Cmn, ' s-m  ', 'Em', Em, ' m    '
+    Write (*, '(A17, F15.5, A6, A17, F15.7, A6)') 'Q=', Q(Nxc2), ' m3/s '
   end subroutine screen
 
 End Program simhis
