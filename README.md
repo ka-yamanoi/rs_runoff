@@ -20,6 +20,7 @@ sudo apt install gfortran git
 
 Download the source code by,
 ```bash
+cd
 git clone https://github.com/ka-yamanoi/rs_runoff.git
 ```
 Then the directory named 'rs_runoff' is generated on the current dirrectory.
